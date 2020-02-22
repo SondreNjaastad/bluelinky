@@ -103,12 +103,11 @@ class BlueLinky {
   }
 
   async getToken(): Promise<TokenResponse> {
-    let response: got.Response<any|null>;
+    let response: any|null;
 
     const now = Math.floor(+new Date() / 1000);
     response = await got(endpoints.getToken + now, {
       method: 'GET',
-      json: true
     });
 
     const csrfToken = response.body.token;

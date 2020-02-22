@@ -22,7 +22,7 @@ export default {
 		builtins(),
 		resolve({ preferBuiltins: true }),
 		typescript({
-			clean: true,
+			// clean: true,
 			abortOnError: false
 		}),
 		commonjs(),

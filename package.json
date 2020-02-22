@@ -15,23 +15,23 @@
   "author": "Hacksore",
   "license": "MIT",
   "dependencies": {
-    "form-data": "^2.3.3",
-    "got": "^9.6.0",
+    "form-data": "^3.0.0",
+    "got": "^10.6.0",
     "winston": "^3.2.1"
   },
   "homepage": "https://github.com/Hacksore/bluelinky",
   "devDependencies": {
     "@types/form-data": "^2.2.1",
     "@types/got": "^9.4.4",
-    "rollup": "^1.15.6",
-    "rollup-plugin-commonjs": "^10.0.0",
-    "rollup-plugin-license": "^0.12.1",
+    "rollup": "^1.31.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-license": "^0.13.0",
     "rollup-plugin-node-builtins": "^2.1.2",
-    "rollup-plugin-node-resolve": "^5.0.3",
-    "rollup-plugin-typescript2": "^0.21.1",
-    "tslib": "^1.10.0",
-    "tslint": "^5.17.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "tslib": "^1.11.0",
+    "tslint": "^6.0.0",
     "tslint-formatter-beauty": "^3.0.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.8.2"
   }
 }
