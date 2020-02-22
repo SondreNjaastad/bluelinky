@@ -111,9 +111,9 @@ export default class Vehicle extends EventEmitter {
 
   async start(config: StartConfig): Promise<HyundaiResponse|null> {
 
-    if(!this.hasFeature('REMOTE START')) {
-      throw new Error('Vehicle does not have the remote start feature');
-    }
+    // if(!this.hasFeature('REMOTE START')) {
+    //   throw new Error('Vehicle does not have the remote start feature');
+    // }
     
     const service = this.isElectric ? 'postRemoteFatcStart' : 'ignitionstart';
     const response = await this._request(endpoints.remoteAction, {
@@ -130,9 +130,9 @@ export default class Vehicle extends EventEmitter {
 
   async stop(): Promise<HyundaiResponse|null> {
 
-    if(!this.hasFeature('REMOTE STOP')) {
-      throw new Error('Vehicle does not have the remote stop feature');
-    }
+    // if(!this.hasFeature('REMOTE STOP')) {
+    //   throw new Error('Vehicle does not have the remote stop feature');
+    // }
     
     const service = this.isElectric ? 'postRemoteFatcStop' : 'ignitionstop';
     const response = await this._request(endpoints.remoteAction, {
