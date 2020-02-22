@@ -51,7 +51,7 @@ export default class Vehicle extends EventEmitter {
       const vehicle = ownerInfo.result.OwnersVehiclesInfo.find(item => this.vin === item.VinNumber);
 
       // hard code list of EVs for now
-      this.isElectric = [1532].includes(vehicle.ModelID);
+      this.isElectric = ["1532"].includes(vehicle.ModelID);
       logger.info(`modelId ${vehicle.ModelID}`);
       logger.info(`isElectric ${this.isElectric.toString()}`);
 
