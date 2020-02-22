@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "form-data": "^3.0.0",
-    "got": "^10.6.0",
+    "got": "^9.6.0",
     "winston": "^3.2.1"
   },
   "homepage": "https://github.com/Hacksore/bluelinky",
