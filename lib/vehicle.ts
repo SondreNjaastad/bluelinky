@@ -147,6 +147,29 @@ export default class Vehicle extends EventEmitter {
     };
   }
 
+  async sendPointOfInterest(config): Promise<HyundaiResponse|null> {
+
+    const response = await this._request(endpoints.destinationSearch, {
+      service: 'sendToVehicle',
+      flag: 'search',
+      title: config.address,
+      address: config.address,
+      lat: config.location.lat,
+      lon: config.location.long,
+      placeid: config.placeId,
+      poid: 0,
+      isFavorite: 0,
+      place_phone: '',
+      mapProvider: 'GOOGLE'
+    });
+
+    return {
+      result: response.RESPONSE_STRING,
+      status: response.E_IFRESULT,
+      errorMessage: response.E_IFFAILMSG
+    }
+  }
+
   async panic(): Promise<HyundaiResponse|null> {
 
     const response = await this._request(endpoints.remoteAction, {
@@ -293,7 +316,6 @@ export default class Vehicle extends EventEmitter {
     });
 
     return response.RESPONSE_STRING.vehicleStatus;
-
   }
 
   private async _request(endpoint, data): Promise<any|null> {
@@ -301,30 +323,35 @@ export default class Vehicle extends EventEmitter {
 
     // handle token refresh if we need to
     await this.bluelinky.handleTokenRefresh();
+    
+    // this is so stupid, but the api only uses lowercase on this endpoint...
+    // maybe there is a better way to handle this that I have not thought of
+    const regIdKey = (endpoint === endpoints.destinationSearch) ? 'regid' : 'regId';
 
-    const formData = buildFormData({
+    const paramData = {
       vin: this.vin,
       username: this.bluelinky.username,
       pin: this.pin,
       url: 'https://owners.hyundaiusa.com/us/en/page/dashboard.html',
       token: this.bluelinky.getAccessToken(),
       gen: this.gen,
-      regId: this.regId,
+      [regIdKey]: this.regId,
       ...data
-    });
+    };
 
-    const response = await got(endpoint, {
+    const formData = buildFormData(paramData);
+    const requestConfig = {
       method: 'POST',
-      body: formData,
-    });
-
-    logger.debug(JSON.stringify(response.body));
+      body: formData
+    };
+    const response = await got(endpoint, requestConfig);
 
     if (response.body.includes('PIN Locked')) {
       throw new Error('PIN is locked, please correct the isssue before trying again.');
     }
 
     try {
+      logger.debug(JSON.stringify(response.body));
       return JSON.parse(response.body);
     } catch (e) {
       return response.body;

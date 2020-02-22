@@ -9,7 +9,8 @@ export const endpoints = {
   myAccount: 'https://owners.hyundaiusa.com/bin/common/MyAccountServlet',
   status: 'https://owners.hyundaiusa.com/bin/common/enrollmentFeature',
   enrollmentStatus: 'https://owners.hyundaiusa.com/bin/common/enrollmentStatus',
-  subscriptions: 'https://owners.hyundaiusa.com/bin/common/managesubscription'
+  subscriptions: 'https://owners.hyundaiusa.com/bin/common/managesubscription',
+  destinationSearch: 'https://owners.hyundaiusa.com/bin/common/destinationSearch',
 };
 
 export const GEN2 = 2;
