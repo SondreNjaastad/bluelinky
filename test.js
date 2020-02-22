@@ -18,7 +18,7 @@ const test = async () => {
 	const vehicle = await client.registerVehicle(config.vin, config.pin);
 
 	// call the status method
-	const status = await vehicle.status();
+	const status = await vehicle.start();
 	console.log(status);
 }
 
