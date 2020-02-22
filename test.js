@@ -18,7 +18,11 @@ const test = async () => {
 	const vehicle = await client.registerVehicle(config.vin, config.pin);
 
 	// call the status method
-	const status = await vehicle.start();
+	const status = await vehicle.start({
+		airCtrl: true,
+		igniOnDuration: 10,
+		airTempvalue: 60
+	});
 	console.log(status);
 }
 

@@ -114,7 +114,7 @@ export default class Vehicle extends EventEmitter {
     // if(!this.hasFeature('REMOTE START')) {
     //   throw new Error('Vehicle does not have the remote start feature');
     // }
-    
+
     const service = this.isElectric ? 'postRemoteFatcStart' : 'ignitionstart';
     const response = await this._request(endpoints.remoteAction, {
       service,
@@ -133,7 +133,7 @@ export default class Vehicle extends EventEmitter {
     // if(!this.hasFeature('REMOTE STOP')) {
     //   throw new Error('Vehicle does not have the remote stop feature');
     // }
-    
+
     const service = this.isElectric ? 'postRemoteFatcStop' : 'ignitionstop';
     const response = await this._request(endpoints.remoteAction, {
       service
