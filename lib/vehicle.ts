@@ -115,10 +115,22 @@ export default class Vehicle extends EventEmitter {
     //   throw new Error('Vehicle does not have the remote start feature');
     // }
 
+    const defaultConfig = {
+      airCtrl: true,
+      igniOnDuration: 10,
+      airTempvalue: 70,
+      defrost: false,
+      heating1: false,
+      seatHeaterVentInfo: {
+        drvSeatHeatState: '2'
+      }
+    }
+    const mergedConfig = { ...defaultConfig, ...config };
+
     const service = this.isElectric ? 'postRemoteFatcStart' : 'ignitionstart';
     const response = await this._request(endpoints.remoteAction, {
-      service,
-      ...config
+      service: service,
+      ...mergedConfig
     });
 
     return {

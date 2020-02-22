@@ -1,30 +1,31 @@
-const config = require('./config.json');
+const config = require("./config.json");
 // const BlueLinky = require('bluelinky');
-const BlueLinky = require('./dist/index');
+const BlueLinky = require("./dist/index");
 
 const authCreds = {
-	username: config.username,
-	password: config.password
-}
+  username: config.username,
+  password: config.password
+};
 
 const test = async () => {
-	console.log(BlueLinky)
-	const client = new BlueLinky(authCreds);
+  console.log(BlueLinky);
+  const client = new BlueLinky(authCreds);
 
-	// do login
-	const auth = await client.login();
-	
-	// we register and wait for a vehicle to get its features
-	const vehicle = await client.registerVehicle(config.vin, config.pin);
+  // do login
+  const auth = await client.login();
 
-	// call the status method
-	const status = await vehicle.start({
-		airCtrl: true,
-		igniOnDuration: 10,
-		airTempvalue: 60
+  // we register and wait for a vehicle to get its features
+  const vehicle = await client.registerVehicle(config.vin, config.pin);
+
+  // call the status method
+  const status = await vehicle.start({
+    airCtrl: true,
+    igniOnDuration: 10,
+    airTempvalue: 70
 	});
-	console.log(status);
-}
+	
+  console.log(status);
+};
 
 test();
 
