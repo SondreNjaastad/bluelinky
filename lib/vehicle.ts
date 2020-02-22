@@ -41,7 +41,7 @@ export default class Vehicle extends EventEmitter {
 
     if(response!.result === 'E:Failure' ||  response!.result !== undefined) {
       response!.result.forEach(item => {
-        console.log(item);
+        logger.debug(JSON.stringify(item));
         this.addFeature(item.featureName, item.featureStatus);
       });
     }
@@ -52,6 +52,9 @@ export default class Vehicle extends EventEmitter {
 
       // hard code list of EVs for now
       this.isElectric = [1532].includes(vehicle.ModelID);
+      logger.info(`modelId ${vehicle.ModelID}`);
+      logger.info(`isElectric ${this.isElectric.toString()}`);
+
       this.gen = vehicle.IsGen2;
       this.regId = vehicle.RegistrationID;
       logger.debug(`registering a gen ${this.gen} vehicle (${this.regId})`);
