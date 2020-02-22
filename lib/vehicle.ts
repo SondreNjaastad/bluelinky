@@ -20,6 +20,7 @@ export default class Vehicle extends EventEmitter {
   private currentFeatures: object;
   private gen: number = 2;
   private regId: string|null = null;
+  private isElectric: boolean = false;
 
   constructor(config: VehicleConfig) {
     super();
@@ -39,16 +40,18 @@ export default class Vehicle extends EventEmitter {
     const response = await this.features();
 
     if(response!.result === 'E:Failure' ||  response!.result !== undefined) {
-
       response!.result.forEach(item => {
+        console.log(item);
         this.addFeature(item.featureName, item.featureStatus);
       });
-
     }
 
     const ownerInfo = await this.ownerInfo();
     if (ownerInfo !== null) {
       const vehicle = ownerInfo.result.OwnersVehiclesInfo.find(item => this.vin === item.VinNumber);
+
+      // hard code list of EVs for now
+      this.isElectric = [1532].includes(vehicle.ModelID);
       this.gen = vehicle.IsGen2;
       this.regId = vehicle.RegistrationID;
       logger.debug(`registering a gen ${this.gen} vehicle (${this.regId})`);
@@ -108,8 +111,13 @@ export default class Vehicle extends EventEmitter {
 
   async start(config: StartConfig): Promise<HyundaiResponse|null> {
 
+    if(!this.hasFeature('REMOTE START')) {
+      throw new Error('Vehicle does not have the remote start feature');
+    }
+    
+    const service = this.isElectric ? 'postRemoteFatcStart' : 'ignitionstart';
     const response = await this._request(endpoints.remoteAction, {
-      service: 'ignitionstart',
+      service,
       ...config
     });
 
@@ -122,8 +130,13 @@ export default class Vehicle extends EventEmitter {
 
   async stop(): Promise<HyundaiResponse|null> {
 
+    if(!this.hasFeature('REMOTE STOP')) {
+      throw new Error('Vehicle does not have the remote stop feature');
+    }
+    
+    const service = this.isElectric ? 'postRemoteFatcStop' : 'ignitionstop';
     const response = await this._request(endpoints.remoteAction, {
-      service: 'ignitionstop'
+      service
     });
 
     return {
@@ -131,10 +144,13 @@ export default class Vehicle extends EventEmitter {
       status: response.E_IFRESULT,
       errorMessage: response.E_IFFAILMSG
     };
-
   }
 
   async flashLights(): Promise<HyundaiResponse|null> {
+
+    if(!this.hasFeature('LIGHTS ONLY')) {
+      throw new Error('Vehicle does not have the flash lights feature');
+    }
 
     const response = await this._request(endpoints.remoteAction, {
       service: 'light'
@@ -148,6 +164,10 @@ export default class Vehicle extends EventEmitter {
   }
 
   async panic(): Promise<HyundaiResponse|null> {
+
+    if(!this.hasFeature('HORN AND LIGHTS')) {
+      throw new Error('Vehicle does not have the panic feature');
+    }
 
     const response = await this._request(endpoints.remoteAction, {
       service: 'horn'
