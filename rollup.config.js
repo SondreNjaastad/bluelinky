@@ -21,7 +21,10 @@ export default {
 	plugins: [
 		builtins(),
 		resolve({ preferBuiltins: true }),
-		typescript(),
+		typescript({
+			clean: true,
+			abortOnError: false
+		}),
 		commonjs(),
 		license({
 			banner: `
